@@ -3,7 +3,7 @@
 Utilizes the Spotify API
 Python script takes in a track, album, or playlist URL to get audio features of those tracks. 
 Audio features: [[definitions from here]](https://towardsdatascience.com/is-my-spotify-music-boring-an-analysis-involving-music-data-and-machine-learning-47550ae931de)
-Instrumentalness: This value represents the amount of vocals in the song. The closer it is to 1.0, the more instrumental the song is.
+\nInstrumentalness: This value represents the amount of vocals in the song. The closer it is to 1.0, the more instrumental the song is.
 Acousticness: This value describes how acoustic a song is. A score of 1.0 means the song is most likely to be an acoustic one.
 Liveness: This value describes the probability that the song was recorded with a live audience. According to the official documentation “a value above 0.8 provides strong likelihood that the track is live”.
 Speechiness: “Speechiness detects the presence of spoken words in a track”. If the speechiness of a song is above 0.66, it is probably made of spoken words, a score between 0.33 and 0.66 is a song that may contain both music and words, and a score below 0.33 means the song does not have any speech.
