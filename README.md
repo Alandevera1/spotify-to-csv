@@ -1,6 +1,6 @@
 # spotify-to-csv
 ## What is it?
-Utilizes the Spotify API
+Utilizes the [Spotify API](https://developer.spotify.com/documentation/web-api/)\
 Python script takes in a track, album, or playlist URL to get audio features of those tracks.
 ## [Audio features](https://developer.spotify.com/documentation/web-api/reference/#objects-index):
 ### Acousticness: 
