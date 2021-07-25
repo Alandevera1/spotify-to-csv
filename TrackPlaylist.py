@@ -25,7 +25,6 @@ BASE_URL = 'https://api.spotify.com/v1/'
 auth_response = requests.post(AUTH_URL, {
     'grant_type': 'client_credentials',
     'client_id': CLIENT_ID,
-    "scope": "user-read-recently-played",
     'client_secret': CLIENT_SECRET,
     "expires_in": 3600
 })
