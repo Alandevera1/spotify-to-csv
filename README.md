@@ -1,7 +1,8 @@
 # spotify-to-csv
 ## What is it?
 Utilizes the [Spotify API](https://developer.spotify.com/documentation/web-api/)\
-Python script takes in a track, album, or playlist URL to get audio features of those tracks.
+Python script takes in a track, album, or playlist URL to get audio features of those tracks and output it out to a csv.  
+Great for doing analysis with tracks you want.
 ## [Audio features](https://developer.spotify.com/documentation/web-api/reference/#objects-index):
 ### acousticness: 
 ##### A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
