@@ -92,7 +92,7 @@ def get_music_data(dict_uri):
         song_info = song_info.json()
 
         data = {
-            'artists': song_info.get('artists')[0].get('name'),
+            'artists': ', '.join([song.get('name') for song in song_info.get('artists')]), # Formatted without [] or ''
             'href': song_info.get('href'),
             'popularity': song_info.get('popularity'),
             'name': song_info.get('name'),
