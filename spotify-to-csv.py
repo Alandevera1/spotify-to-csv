@@ -59,7 +59,8 @@ def get_playlist_tracks(playlist_url):
 def get_album_tracks(album_url):
 
     # Indices of the URI in the playlist link
-    album_id = album_url[len('https://open.spotify.com/album/'):len('https://open.spotify.com/album/') + 22]
+    album_id = album_url[len('https://open.spotify.com/album/')                        
+                        :len('https://open.spotify.com/album/') + 22]
     playlist = requests.get(BASE_URL + 'albums/' +
                             album_id + '/tracks', headers=headers)
     playlist = playlist.json()
@@ -73,13 +74,33 @@ def get_album_tracks(album_url):
 
 '''CREATING A DATAFRAME OF THE AUDIO FEATURES OF TRACKS'''
 
-
+''' 
+                                <COLUMNS>
+['artists', 'name', 'album', 'release_date', 'popularity', 'href',
+       'danceability', 'energy', 'key', 'loudness', 'mode', 'speechiness',
+       'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
+       'type', 'id', 'uri', 'analysis_url', 'duration_ms', 'time_signature']
+'''
 def get_music_data(dict_uri):
     music_data = pd.DataFrame()
     name = pd.DataFrame()
 
     counter = 0
     for i in dict_uri:
+        song_info = requests.get(BASE_URL + 'tracks/' + i, headers=headers)
+        song_info = song_info.json()
+
+        data = {
+            # Formatted without [] or ''
+            'artists': ', '.join([song.get('name') for song in song_info.get('artists')]),
+            'name': song_info.get('name'),
+            'album': song_info.get('album').get('name'),
+            'release_date': song_info.get('album').get('release_date'),
+            'popularity': song_info.get('popularity'),
+            'href': song_info.get('href'),
+        }
+
+        name = name.append(pd.DataFrame(data=data, index=[counter]))
 
         song_info = requests.get(
             BASE_URL + 'audio-features/' + i, headers=headers)
@@ -88,23 +109,11 @@ def get_music_data(dict_uri):
         music_data = music_data.append(
             pd.DataFrame(data=song_info, index=[counter]))
 
-        song_info = requests.get(BASE_URL + 'tracks/' + i, headers=headers)
-        song_info = song_info.json()
 
-        data = {
-            'artists': ', '.join([song.get('name') for song in song_info.get('artists')]), # Formatted without [] or ''
-            'href': song_info.get('href'),
-            'popularity': song_info.get('popularity'),
-            'name': song_info.get('name'),
-            'release_date': song_info.get('album').get('release_date'),
-            'album': song_info.get('album').get('name')
-        }
-
-        name = name.append(pd.DataFrame(data=data, index=[counter]))
         counter = counter + 1
 
     music_data = music_data.rename(columns={'track_href': 'href'})
-    music_data = music_data.merge(name, on='href')
+    music_data = name.merge(music_data, on='href')
 
     return music_data
 
