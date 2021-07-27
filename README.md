@@ -5,7 +5,7 @@ Python script takes in a track, album, or playlist URL to get audio features of 
 Great for doing analysis with tracks you want.
 ## [Audio features](https://developer.spotify.com/documentation/web-api/reference/#objects-index):
 ### acousticness: 
-##### A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
+#### A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
 ### danceability
 #### Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.	
 ### energy
