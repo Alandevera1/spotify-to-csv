@@ -59,8 +59,9 @@ def get_playlist_tracks(playlist_url):
 def get_album_tracks(album_url):
 
     # Indices of the URI in the playlist link
-    album_id = album_url[len('https://open.spotify.com/album/')                        
+    album_id = album_url[len('https://open.spotify.com/album/')                         
                         :len('https://open.spotify.com/album/') + 22]
+
     playlist = requests.get(BASE_URL + 'albums/' +
                             album_id + '/tracks', headers=headers)
     playlist = playlist.json()
@@ -81,6 +82,8 @@ def get_album_tracks(album_url):
        'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
        'type', 'id', 'uri', 'analysis_url', 'duration_ms', 'time_signature']
 '''
+
+
 def get_music_data(dict_uri):
     music_data = pd.DataFrame()
     name = pd.DataFrame()
@@ -109,8 +112,7 @@ def get_music_data(dict_uri):
         music_data = music_data.append(
             pd.DataFrame(data=song_info, index=[counter]))
 
-
-        counter = counter + 1
+        counter += 1
 
     music_data = music_data.rename(columns={'track_href': 'href'})
     music_data = name.merge(music_data, on='href')
@@ -144,51 +146,58 @@ while (keepRunning is True):
 
     if (user_answer.lower() == 'album'):
         user_answer = input('Input an album URL: ')
-
-        album_tracks = get_album_tracks(user_answer)
-
-        if (final_playlist.empty == True):
-            final_playlist = album_tracks
-        else:
-            final_playlist = final_playlist.append(album_tracks)
-
-        user_answer = input('Want to add another playlist or album?(y/n) ')
-
-        if (user_answer.lower() == 'n'):
-            keepRunning = False
-            playlist_to_csv(final_playlist)
+        try:
+            album_tracks = get_album_tracks(user_answer)
+            if (final_playlist.empty == True):
+                final_playlist = album_tracks
+            else:
+                final_playlist = final_playlist.append(album_tracks)
+            user_answer = input('Want to add another playlist or album?(y/n) ')
+            if (user_answer.lower() == 'n'):
+                keepRunning = False
+                playlist_to_csv(final_playlist)
+        except TypeError:
+            print("Not a valid URL.")
 
     elif(user_answer.lower() == 'playlist'):
         user_answer = input('Input a playlist URL: ')
-        playlist_tracks = get_playlist_tracks(user_answer)
+        try:
+            playlist_tracks = get_playlist_tracks(user_answer)
 
-        if (final_playlist.empty == True):
-            final_playlist = playlist_tracks
-        else:
-            final_playlist = final_playlist.append(playlist_tracks)
+            if (final_playlist.empty == True):
+                final_playlist = playlist_tracks
+            else:
+                final_playlist = final_playlist.append(playlist_tracks)
 
-        user_answer = input('Want to add another playlist or album?(y/n) ')
+            user_answer = input('Want to add another playlist or album?(y/n) ')
 
-        if (user_answer.lower() == 'n'):
-            keepRunning = False
-            playlist_to_csv(final_playlist)
+            if (user_answer.lower() == 'n'):
+                keepRunning = False
+                playlist_to_csv(final_playlist)
+
+        except TypeError:
+            print("Not a valid URL.")
 
     elif(user_answer.lower() == 'track'):
         user_answer = input('Input a track URL: ')
         user_answer_uri = user_answer[(len(
             'https://open.spotify.com/track/')):(len('https://open.spotify.com/track/') + 22)]
 
-        if (final_playlist.empty == True):
-            final_playlist = get_music_data([user_answer_uri])
-        else:
-            final_playlist = final_playlist.append(
-                get_music_data([user_answer_uri]))
+        try:
+            if (final_playlist.empty == True):
+                final_playlist = get_music_data([user_answer_uri])
+            else:
+                final_playlist = final_playlist.append(
+                    get_music_data([user_answer_uri]))
 
-        user_answer = input('Want to add another playlist or album?(y/n) ')
+            user_answer = input('Want to add another playlist or album?(y/n) ')
 
-        if (user_answer.lower() == 'n'):
-            keepRunning = False
-            playlist_to_csv(final_playlist)
+            if (user_answer.lower() == 'n'):
+                keepRunning = False
+                playlist_to_csv(final_playlist)
+
+        except TypeError:
+            print("Not a valid URL.")
 
     elif(user_answer.lower() == 'quit'):
         keepRunning = False
